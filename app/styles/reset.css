@@ -82,11 +82,21 @@ body > main {
   margin: 0 1rem 1rem 1rem;
 }
 
+/* Remove margins for homepage to allow edge-to-edge hero */
+body > main.home-main {
+  margin: 0;
+}
+
 section {
   padding: 1rem 0;
   @media (min-width: 768px) {
     padding: 2rem 0;
   }
+}
+
+/* Add back margins for sections inside homepage after hero */
+.home-main section:not(.hero-banner) {
+  margin: 0 1rem;
 }
 
 fieldset {

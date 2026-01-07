@@ -11,9 +11,12 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
+import {HeroBanner} from '~/components/HeroBanner';
+import {CarouselMessage} from '~/components/CarouselMessage';
+import {CollectionShowcase} from '~/components/CollectionShowcase';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Little Earth Teak | Premium Plantation-Grown Teak Furniture'}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -31,13 +34,14 @@ export async function loader(args: Route.LoaderArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({context}: Route.LoaderArgs) {
-  const [{collections}] = await Promise.all([
+  const [{collections}, showcaseCollections] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(SHOWCASE_COLLECTIONS_QUERY),
   ]);
 
   return {
     featuredCollection: collections.nodes[0],
+    showcaseCollections: showcaseCollections.collections.nodes,
   };
 }
 
@@ -63,10 +67,20 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
+    <main className="home-main">
+      <CarouselMessage />
+      <HeroBanner
+        desktopVideoUrl="https://cdn.shopify.com/videos/c/o/v/e70307874bcc461d89111b8adf606600.mp4"
+        mobileVideoUrl="https://cdn.shopify.com/videos/c/o/v/1b21efe616ef4f8fb0b40cfd5033a05e.mp4"
+        headline="The Gold Standard of Teak."
+        subheadline="Experience the warmth and durability of authentic, plantation-grown hardwood."
+        ctaText="Shop Premium Teak"
+        ctaLink="/collections/bathroom"
+      />
+      <CollectionShowcase collections={data.showcaseCollections} />
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
-    </div>
+    </main>
   );
 }
 
@@ -136,6 +150,23 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
+      }
+    }
+  }
+` as const;
+
+const SHOWCASE_COLLECTIONS_QUERY = `#graphql
+  query ShowcaseCollections($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    collections(first: 10) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          url
+          altText
+        }
       }
     }
   }
