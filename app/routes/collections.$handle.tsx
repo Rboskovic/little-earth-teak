@@ -1,11 +1,12 @@
 import {redirect, useLoaderData} from 'react-router';
 import type {Route} from './+types/collections.$handle';
-import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {getPaginationVariables, Analytics, Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
 import {CollectionHero} from '~/components/CollectionHero';
+import {CollectionConfigurator} from '~/components/CollectionConfigurator';
 import type {ProductItemFragment} from 'storefrontapi.generated';
+import {Link} from 'react-router';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -28,8 +29,10 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   const {handle} = params;
   const {storefront} = context;
+  
+  // Fetch first page with more products to allow for configurator insertion
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 12, // Get more products for initial load
   });
 
   if (!handle) {
@@ -68,27 +71,69 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
+  
+  // Split products: first 4, then configurator, then rest
+  const products = collection.products.nodes;
+  const firstFourProducts = products.slice(0, 4);
+  const remainingProducts = products.slice(4);
+  const hasMorePages = collection.products.pageInfo.hasNextPage;
 
   return (
     <div className="collection">
       {/* Hero Banner with image and text overlay */}
       <CollectionHero title={collection.title} />
 
-      {/* Product Grid - 2 cols mobile, 4 cols desktop */}
+      {/* Product Grid Container */}
       <div className="collection-products-container">
-        <PaginatedResourceSection<ProductItemFragment>
-          connection={collection.products}
-          resourcesClassName="collection-products-grid"
-        >
-          {({node: product, index}) => (
+        {/* First 4 Products */}
+        <div className="collection-products-grid">
+          {firstFourProducts.map((product, index) => (
             <ProductItem
               key={product.id}
               product={product}
-              loading={index < 8 ? 'eager' : undefined}
+              loading={index < 4 ? 'eager' : undefined}
             />
-          )}
-        </PaginatedResourceSection>
+          ))}
+        </div>
       </div>
+
+      {/* Configurator Section - After first 4 products */}
+      <CollectionConfigurator
+        title="Custom options for all spaces"
+        description="Configure your own setup from our best selling teak outdoor lounge sectional, the Haven Collection. Our modular system mean you can easily customize the shape, size, color and style of your furniture to fit your space."
+        ctaText="Start customizing"
+        ctaLink="/pages/configurator" // Update this to your actual configurator page
+        videoUrl="https://cdn.shopify.com/videos/c/o/v/06b6a329af254303bb9fa2d02ae76e87.mp4"
+      />
+
+      {/* Remaining Products */}
+      {remainingProducts.length > 0 && (
+        <div className="collection-products-container">
+          <div className="collection-products-grid">
+            {remainingProducts.map((product, index) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Load More Button - if there are more pages */}
+      {hasMorePages && (
+        <div className="collection-load-more">
+          <Link
+            to={`?${new URLSearchParams({
+              after: collection.products.pageInfo.endCursor || '',
+            })}`}
+            className="collection-load-more-button"
+          >
+            Load More Products
+          </Link>
+        </div>
+      )}
 
       <Analytics.CollectionView
         data={{
