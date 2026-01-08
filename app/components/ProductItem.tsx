@@ -32,13 +32,26 @@ export function ProductItem({
   const reviewCount = 148;
 
   // TODO: Get color variants from product metafields
-  // Fallback color swatches - simulating color options
+  // Extract unique color variants from product
   const colorVariants = 'variants' in product && product.variants 
     ? product.variants.nodes
         .filter((variant) => 
           variant.selectedOptions.some((option) => 
             option.name.toLowerCase() === 'color'
           )
+        )
+        .map((variant) => {
+          const colorOption = variant.selectedOptions.find(
+            (opt) => opt.name.toLowerCase() === 'color'
+          );
+          return {
+            id: variant.id,
+            value: colorOption?.value || '',
+          };
+        })
+        // Remove duplicates
+        .filter((variant, index, self) => 
+          index === self.findIndex((v) => v.value === variant.value)
         )
         .slice(0, 5) // Show max 5 colors
     : [];
@@ -50,8 +63,8 @@ export function ProductItem({
       prefetch="intent"
       to={variantUrl}
     >
-      {/* Product Image Container */}
-      <div className="product-item-image-wrapper">
+      {/* Product Image Container - FIXED: Enforces square aspect ratio */}
+      <div className="product-item-image-container">
         {/* Badges */}
         {(isNew || isBestSeller) && (
           <div className="product-badges">
@@ -60,21 +73,23 @@ export function ProductItem({
           </div>
         )}
 
-        {/* Product Image with grey background and rounded corners */}
-        {image ? (
-          <Image
-            alt={image.altText || product.title}
-            aspectRatio="1/1"
-            data={image}
-            loading={loading}
-            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-            className="product-item-image"
-          />
-        ) : (
-          <div className="product-item-image-placeholder">
-            <span className="product-item-no-image-text">No image</span>
-          </div>
-        )}
+        {/* Product Image - Forced to square */}
+        <div className="product-item-image-wrapper">
+          {image ? (
+            <Image
+              alt={image.altText || product.title}
+              aspectRatio="1/1"
+              data={image}
+              loading={loading}
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              className="product-item-image"
+            />
+          ) : (
+            <div className="product-item-image-placeholder">
+              <span className="product-item-no-image-text">No image</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Product Info */}
@@ -82,34 +97,10 @@ export function ProductItem({
         {/* Product Title */}
         <h4 className="product-item-title">{product.title}</h4>
 
-        {/* Color Variant Swatches */}
-        {colorVariants.length > 0 && (
-          <div className="product-color-swatches">
-            {colorVariants.map((variant) => {
-              const colorOption = variant.selectedOptions.find(
-                (opt) => opt.name.toLowerCase() === 'color'
-              );
-              const colorValue = colorOption?.value.toLowerCase() || 'grey';
-              
-              return (
-                <div
-                  key={variant.id}
-                  className="product-color-swatch"
-                  style={{
-                    backgroundColor: getColorHex(colorValue),
-                  }}
-                  title={colorOption?.value}
-                />
-              );
-            })}
-          </div>
-        )}
-
         {/* Star Rating - TODO: Connect to review app */}
         <div className="product-rating">
           <div className="product-stars">
             {[...Array(5)].map((_, index) => {
-              const starValue = index + 1;
               const fillPercentage = Math.min(Math.max((rating - index) * 100, 0), 100);
               
               return (
@@ -129,6 +120,26 @@ export function ProductItem({
             {rating} ({reviewCount})
           </span>
         </div>
+
+        {/* Color Variant Swatches */}
+        {colorVariants.length > 0 && (
+          <div className="product-color-swatches">
+            {colorVariants.map((variant) => {
+              const colorValue = variant.value.toLowerCase();
+              
+              return (
+                <div
+                  key={variant.id}
+                  className="product-color-swatch"
+                  style={{
+                    backgroundColor: getColorHex(colorValue),
+                  }}
+                  title={variant.value}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {/* Price */}
         <div className="product-item-price">
@@ -163,6 +174,7 @@ function getColorHex(colorName: string): string {
     tan: '#D2B48C',
     olive: '#556B2F',
     natural: '#D2B48C',
+    teak: '#B8860B',
   };
 
   return colorMap[colorName] || '#E5E7EB'; // Default to light grey
