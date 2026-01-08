@@ -45,15 +45,7 @@ export function CollectionShowcase({collections}: CollectionShowcaseProps) {
     <section className="w-full bg-white py-12">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <h2
-          className="text-black font-semibold mb-8"
-          style={{
-            fontSize: '32px',
-            fontWeight: 600,
-            lineHeight: '36px',
-            color: '#1a1a1a',
-          }}
-        >
+        <h2 className="text-[32px] leading-[36px] font-semibold text-[#1a1a1a] mb-8">
           Shop Bathroom Essentials
         </h2>
 
@@ -65,10 +57,10 @@ export function CollectionShowcase({collections}: CollectionShowcaseProps) {
         </div>
 
         {/* Mobile - Horizontal scroll */}
-        <div className="md:hidden overflow-x-auto pb-4">
-          <div className="flex gap-4" style={{width: 'max-content'}}>
+        <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4">
+          <div className="flex gap-4">
             {featuredCollections.map((collection) => (
-              <div key={collection.id} style={{width: '280px', flexShrink: 0}}>
+              <div key={collection.id} className="w-[280px] flex-shrink-0">
                 <CollectionCard collection={collection} />
               </div>
             ))}
@@ -84,25 +76,13 @@ function CollectionCard({collection}: {collection: Collection}) {
 
   if (!content) return null;
 
-  const backgroundColor = '#3d5a4d'; // Earthy green matching hero
-
   return (
     <Link
       to={`/collections/${collection.handle}`}
-      className="group block rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
-      style={{
-        backgroundColor: backgroundColor,
-      }}
+      className="group block rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-[#3d5a4d]"
     >
       {/* Image Section - 4:3 aspect ratio */}
-      <div
-        className="relative overflow-hidden"
-        style={{
-          width: '100%',
-          aspectRatio: '4/3',
-          backgroundColor: '#e9ecef',
-        }}
-      >
+      <div className="relative overflow-hidden w-full aspect-[4/3] bg-[#e9ecef]">
         {collection.image ? (
           <img
             src={collection.image.url}
@@ -118,57 +98,20 @@ function CollectionCard({collection}: {collection: Collection}) {
       </div>
 
       {/* Text Section */}
-      <div
-        style={{
-          padding: '24px',
-          minHeight: '240px',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <div className="p-6 min-h-[240px] flex flex-col">
         {/* Headline */}
-        <h3
-          className="text-white font-semibold"
-          style={{
-            fontSize: '22px',
-            fontWeight: 600,
-            lineHeight: '28px',
-            marginBottom: '12px',
-          }}
-        >
+        <h3 className="text-[22px] leading-[28px] font-semibold text-white mb-3">
           {content.headline}
         </h3>
 
         {/* Description as bullet points */}
-        <ul
-          className="text-gray-300"
-          style={{
-            paddingLeft: '0',
-            margin: 0,
-            marginBottom: '12px',
-            flex: 1,
-          }}
-        >
+        <ul className="text-gray-300 mb-3 flex-1 space-y-1.5 pl-0 m-0">
           {content.description.split(';').map((item, index) => (
             <li
               key={index}
-              style={{
-                fontSize: '15px',
-                lineHeight: '20px',
-                marginBottom: '6px',
-                paddingLeft: '18px',
-                position: 'relative',
-              }}
+              className="text-[15px] leading-5 pl-[18px] relative"
             >
-              <span
-                style={{
-                  position: 'absolute',
-                  left: '0',
-                  top: '0',
-                }}
-              >
-                •
-              </span>
+              <span className="absolute left-0 top-0">•</span>
               {item.trim()}
             </li>
           ))}
@@ -176,13 +119,8 @@ function CollectionCard({collection}: {collection: Collection}) {
 
         {/* Explore Collection Button */}
         <button
-          className="inline-block border-2 border-white text-white font-medium py-2.5 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-200"
-          style={{
-            fontSize: '16px',
-            fontWeight: 500,
-            alignSelf: 'flex-start',
-            marginTop: 'auto',
-          }}
+          className="inline-block self-start mt-auto border-2 border-white text-white font-medium text-base py-2.5 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-200"
+          type="button"
         >
           Explore Collection
         </button>

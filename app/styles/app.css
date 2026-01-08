@@ -1,3 +1,12 @@
+/* 
+* Little Earth Teak - Main Stylesheet
+* Framework: Tailwind CSS v4 + Custom Hydrogen Styles
+* Last Updated: 2026-01-08
+* 
+* NOTE: Tailwind v4 auto-generates utility classes.
+* Only custom styles and Hydrogen defaults should be here.
+*/
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -132,7 +141,7 @@ aside li {
   pointer-events: auto;
   visibility: visible;
 }
-/* reveal aside */
+
 .overlay.expanded aside {
   transform: translateX(calc(var(--aside-width) * -1));
 }
@@ -234,6 +243,7 @@ button.reset:hover:not(:has(> *)) {
   align-items: center;
   display: flex;
 }
+
 /*
 * --------------------------------------------------
 * components/Search
@@ -300,7 +310,10 @@ button.reset:hover:not(:has(> *)) {
 
 .featured-collection-image {
   aspect-ratio: 1 / 1;
-  @media (min-width: 45em) {
+}
+
+@media (min-width: 45em) {
+  .featured-collection-image {
     aspect-ratio: 16 / 9;
   }
 }
@@ -315,7 +328,10 @@ button.reset:hover:not(:has(> *)) {
   display: grid;
   grid-gap: 1.5rem;
   grid-template-columns: repeat(2, 1fr);
-  @media (min-width: 45em) {
+}
+
+@media (min-width: 45em) {
+  .recommended-products-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -348,7 +364,10 @@ button.reset:hover:not(:has(> *)) {
 .collection-description {
   margin-bottom: 1rem;
   max-width: 95%;
-  @media (min-width: 45em) {
+}
+
+@media (min-width: 45em) {
+  .collection-description {
     max-width: 600px;
   }
 }
@@ -360,11 +379,6 @@ button.reset:hover:not(:has(> *)) {
   margin-bottom: 2rem;
 }
 
-.product-item img {
-  height: auto;
-  width: 100%;
-}
-
 /*
 * --------------------------------------------------
 * routes/products.$handle.tsx
@@ -372,7 +386,10 @@ button.reset:hover:not(:has(> *)) {
 */
 .product {
   display: grid;
-  @media (min-width: 45em) {
+}
+
+@media (min-width: 45em) {
+  .product {
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
   }
@@ -462,14 +479,13 @@ button.reset:hover:not(:has(> *)) {
 * routes/account
 * --------------------------------------------------
 */
-
 .account-logout {
   display: inline-block;
 }
 
 /*
 * --------------------------------------------------
-* Order Search Form - Minimal & Responsive
+* Order Search Form
 * --------------------------------------------------
 */
 .order-search-form {
@@ -523,10 +539,9 @@ button.reset:hover:not(:has(> *)) {
 /*
 * --------------------------------------------------
 * components/HeroBanner
+* Custom styles for complex video overlay layout
 * --------------------------------------------------
 */
-
-/* MOBILE: Vertical layout (video top, text below) */
 .hero-banner {
   position: relative;
   width: 100vw;
@@ -605,11 +620,9 @@ button.reset:hover:not(:has(> *)) {
   transform: scale(0.98);
 }
 
-/* TABLET & DESKTOP: Overlay layout (text over video) */
+/* Tablet & Desktop: Overlay layout */
 @media (min-width: 768px) {
   .hero-banner {
-    position: relative;
-    background-color: #2d3e2d;
     aspect-ratio: 1594 / 524;
   }
 
@@ -651,7 +664,6 @@ button.reset:hover:not(:has(> *)) {
 
   .hero-headline {
     font-size: 2.5rem;
-    color: #ffffff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
 
@@ -663,16 +675,11 @@ button.reset:hover:not(:has(> *)) {
   }
 
   .hero-cta {
-    background-color: #ffffff;
-    color: #000000;
-    border: none;
     border-radius: 4px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
 
   .hero-cta:hover {
-    background-color: #f0f0f0;
-    color: #000000;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
@@ -721,9 +728,9 @@ button.reset:hover:not(:has(> *)) {
 /*
 * --------------------------------------------------
 * components/CarouselMessage
+* Custom styles for animated message carousel
 * --------------------------------------------------
 */
-
 .carousel-message {
   background-color: #f5f5f5;
   color: #000000;
@@ -774,218 +781,327 @@ button.reset:hover:not(:has(> *)) {
 
 /*
 * --------------------------------------------------
-* components/CollectionShowcase
+* components/CollectionHero
+* Hero banner for collection pages with text overlay
 * --------------------------------------------------
 */
-
-/* Remove default Tailwind utility overrides */
-.w-full {
-  width: 100%;
-}
-
-.bg-white {
-  background-color: #ffffff;
-}
-
-.py-12 {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-}
-
-.max-w-\[1400px\] {
-  max-width: 1400px;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.mb-8 {
-  margin-bottom: 2rem;
-}
-
-.hidden {
-  display: none;
-}
-
-.gap-6 {
-  gap: 1.5rem;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
-.pb-4 {
-  padding-bottom: 1rem;
-}
-
-.flex {
-  display: flex;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.group {
-  /* Group hover utility parent */
-}
-
-.block {
-  display: block;
-}
-
-.rounded-2xl {
-  border-radius: 1rem;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.shadow-md {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.hover\:shadow-xl:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.transition-shadow {
-  transition-property: box-shadow;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
-}
-
-.relative {
+.collection-hero {
   position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  overflow: hidden;
+  background-color: #f5f5f5;
 }
 
-.object-cover {
+.collection-hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
   object-fit: cover;
 }
 
-.group:hover .group-hover\:scale-105 {
-  transform: scale(1.05);
+.collection-hero-image-desktop {
+  display: none;
 }
 
-.transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+.collection-hero-image-mobile {
+  display: block;
 }
 
-.text-white {
+.collection-hero-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding: 2rem 1.5rem;
+}
+
+.collection-hero-text {
+  max-width: 400px;
+}
+
+.collection-hero-headline {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
   color: #ffffff;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.font-semibold {
-  font-weight: 600;
-}
-
-.text-gray-300 {
-  color: #d1d5db;
-}
-
-.text-gray-400 {
-  color: #9ca3af;
-}
-
-.bg-gray-200 {
-  background-color: #e5e7eb;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.inline-block {
-  display: inline-block;
-}
-
-.border-2 {
-  border-width: 2px;
-}
-
-.border-white {
-  border-color: #ffffff;
-}
-
-.font-medium {
-  font-weight: 500;
-}
-
-.py-2\.5 {
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.rounded-full {
-  border-radius: 9999px;
-}
-
-.hover\:bg-white:hover {
-  background-color: #ffffff;
-}
-
-.hover\:text-black:hover {
-  color: #000000;
-}
-
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.duration-200 {
-  transition-duration: 200ms;
-}
-
-@media (min-width: 640px) {
-  .sm\:px-6 {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
+.collection-hero-body {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 @media (min-width: 768px) {
-  .md\:hidden {
+  .collection-hero-image-desktop {
+    display: block;
+  }
+
+  .collection-hero-image-mobile {
     display: none;
   }
 
-  .md\:grid {
-    display: grid;
+  .collection-hero-content {
+    padding: 3rem 2rem;
   }
 
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .collection-hero-text {
+    max-width: 500px;
+  }
+
+  .collection-hero-headline {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .collection-hero-body {
+    font-size: 1.125rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .lg\:px-8 {
-    padding-left: 2rem;
-    padding-right: 2rem;
+  .collection-hero-content {
+    padding: 4rem 3rem;
+  }
+
+  .collection-hero-text {
+    max-width: 600px;
+  }
+
+  .collection-hero-headline {
+    font-size: 3rem;
+  }
+}
+
+/*
+* --------------------------------------------------
+* Collection Products Container
+* --------------------------------------------------
+*/
+.collection-products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .collection-products-container {
+    padding: 4rem 2rem;
+  }
+}
+
+/*
+* --------------------------------------------------
+* Collection Products Grid
+* 2 columns mobile, 4 columns desktop
+* --------------------------------------------------
+*/
+.collection-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .collection-products-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+/*
+* --------------------------------------------------
+* Enhanced Product Item Styles
+* --------------------------------------------------
+*/
+.product-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.product-item:hover {
+  transform: translateY(-4px);
+}
+
+.product-item-image-wrapper {
+  position: relative;
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.product-item-image {
+  border-radius: 0.5rem;
+}
+
+.product-item-image-placeholder {
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.product-item-no-image-text {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/*
+* --------------------------------------------------
+* Product Badges
+* --------------------------------------------------
+*/
+.product-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 0.25rem;
+  line-height: 1.5;
+}
+
+.product-badge-new {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.product-badge-bestseller {
+  background-color: #c2410c;
+  color: #ffffff;
+}
+
+/*
+* --------------------------------------------------
+* Product Info
+* --------------------------------------------------
+*/
+.product-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
+  color: #111827;
+}
+
+@media (min-width: 768px) {
+  .product-item-title {
+    font-size: 1rem;
+  }
+}
+
+/*
+* --------------------------------------------------
+* Color Swatches
+* --------------------------------------------------
+*/
+.product-color-swatches {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.product-color-swatch {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #d1d5db;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.product-color-swatch:hover {
+  transform: scale(1.1);
+}
+
+/*
+* --------------------------------------------------
+* Star Rating
+* TODO: Connect to actual review app
+* --------------------------------------------------
+*/
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.product-stars {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.product-star-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.product-star-empty {
+  color: #d1d5db;
+}
+
+.product-star-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  color: #f59e0b;
+}
+
+.product-rating-text {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+/*
+* --------------------------------------------------
+* Product Price
+* --------------------------------------------------
+*/
+.product-item-price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+@media (min-width: 768px) {
+  .product-item-price {
+    font-size: 1.125rem;
   }
 }
